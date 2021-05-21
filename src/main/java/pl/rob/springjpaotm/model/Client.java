@@ -21,7 +21,7 @@ public class Client implements Serializable {
     private String lastName;
     @Column(nullable = false)
     private String address;
-    @OneToMany(mappedBy = "client")
+    @OneToMany(mappedBy = "client", fetch = FetchType.EAGER)
     private List<Order> orders = new ArrayList<>();
 
     Client() {
@@ -79,7 +79,7 @@ public class Client implements Serializable {
                 "id=" + id +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
-                ", address='" + address + '\'' +
+                ", address='" + address + orders.size() + '\'' +
                 ", orders=" + orders +
                 '}';
     }
