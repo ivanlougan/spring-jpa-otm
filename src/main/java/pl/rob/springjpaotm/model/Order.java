@@ -2,6 +2,8 @@ package pl.rob.springjpaotm.model;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "client_order")
@@ -14,8 +16,10 @@ public class Order implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_order")
     private Long id;
-    @Column(nullable = false)
-    private String product;
+    @ManyToMany
+    @JoinTable(name = "order_products", joinColumns = {@JoinColumn(name = "order_id", referencedColumnName = "id_order")},
+            inverseJoinColumns = {@JoinColumn(name = "product_id", referencedColumnName = "id_product")}    )
+    private List<Product> products = new ArrayList<>();
     @Column(name = "details", length = 512)
     private String orderDetails;
     @ManyToOne
@@ -25,8 +29,8 @@ public class Order implements Serializable {
     Order() {
     }
 
-    public Order(String product, String orderDetails) {
-        this.product = product;
+    public Order( String orderDetails) {
+        super();
         this.orderDetails = orderDetails;
     }
 
@@ -38,12 +42,12 @@ public class Order implements Serializable {
         this.id = id;
     }
 
-    public String getProduct() {
-        return product;
+    public List<Product> getProduct() {
+        return products;
     }
 
-    public void setProduct(String product) {
-        this.product = product;
+    public void setProduct(List<Product> products) {
+        this.products = products;
     }
 
     public String getOrderDetails() {
@@ -54,11 +58,19 @@ public class Order implements Serializable {
         this.orderDetails = orderDetails;
     }
 
+    public Client getClient() {
+        return client;
+    }
+
+    public void setClient(Client client) {
+        this.client = client;
+    }
+
     @Override
     public String toString() {
         return "Order{" +
                 "id=" + id +
-                ", product='" + product + '\'' +
+                ", product='" + products.size() + '\'' +
                 ", details='" + orderDetails + '\'' +
                 ", Client name: " + client.getFirstName()
                 + client.getLastName() +

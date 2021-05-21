@@ -16,8 +16,10 @@ public class  SpringJpaOtmApplication {
 		ClientDao clientDao = ctx.getBean(ClientDao.class);
 		clientDao.save(client);
 
-		Order order = new Order("Telewizor LG", "42', dostawa do domu");
-		clientDao.addOrder(client, order);
+		Order order = new Order("extremely fast postage with extra flowers");
+		order.setClient(client);
+		OrderDao orderDao = ctx.getBean(OrderDao.class);
+		orderDao.save(order);
 
 		Client getClient = clientDao.get(1L);
 		System.out.println(getClient);
