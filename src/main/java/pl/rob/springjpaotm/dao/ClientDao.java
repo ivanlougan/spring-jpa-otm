@@ -11,6 +11,12 @@ import javax.persistence.EntityManager;
 @Repository
 public class ClientDao extends GenericDao<Client, Long>{
 
+
+    public void removeAllOrders(Client client) {
+        Client clientToRemove = get(client.getId());
+        clientToRemove.getOrders().clear();
+    }
+
 //    public void addOrder(Client client, Order order) {
 //        //into managed state
 //        Client updateClient = getEntityManager().find(Client.class, client.getId());

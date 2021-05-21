@@ -21,8 +21,16 @@ public class Client implements Serializable {
     private String lastName;
     @Column(nullable = false)
     private String address;
-    @OneToMany(mappedBy = "client", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "client",
+            fetch = FetchType.EAGER,
+            cascade = {CascadeType.PERSIST, CascadeType.REMOVE},
+            orphanRemoval = true)
     private List<Order> orders = new ArrayList<>();
+
+    public void addOrder(Order order) {
+        order.setClient(this);
+        getOrders().add(order);
+    }
 
     Client() {
     }

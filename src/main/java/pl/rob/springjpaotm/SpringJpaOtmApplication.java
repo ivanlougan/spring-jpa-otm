@@ -16,24 +16,24 @@ public class  SpringJpaOtmApplication {
 		ConfigurableApplicationContext ctx = SpringApplication.run(SpringJpaOtmApplication.class, args);
 
 		Client client = new Client("Krzysiu", "Pierdzikowski", "Celarowska 60, Cracow");
-		ClientDao clientDao = ctx.getBean(ClientDao.class);
-		clientDao.save(client);
 
 		Order order = new Order("extremely fast postage with an extra massage");
-		order.setClient(client);
-		OrderDao orderDao = ctx.getBean(OrderDao.class);
-		orderDao.save(order);
 
 		Product product1 = new Product("Keyboard", 9999.0, "build in microwave");
 		Product product2 = new Product("IPhone x69", 10.0, "cheap and crap, free brain illness included");
-		ProductDao productDao = ctx.getBean(ProductDao.class);
-		productDao.save(product1);
-		productDao.save(product2);
+		order.getProduct().add(product1);
+		order.getProduct().add(product2);
+		client.addOrder(order);
 
-		orderDao.addProductsToOrder(order.getId(), product1, product2);
+		ClientDao clientDao = ctx.getBean(ClientDao.class);
+		clientDao.save(client);
 
-		Client getClient = clientDao.get(order.getId());
+
+		Client getClient = clientDao.get(client.getId());
 		System.out.println("\n" + getClient);
+
+		clientDao.removeAllOrders(client);
+
 
 		ctx.close();
 	}

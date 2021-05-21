@@ -1,5 +1,7 @@
 package pl.rob.springjpaotm.dao;
 
+import pl.rob.springjpaotm.model.Client;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
@@ -34,5 +36,11 @@ public abstract class GenericDao<T, K> {
 
     public void update(T entity) {
         entityManager.merge(entity);
+    }
+
+    public void remove(T entity) {
+        T managedClient = entityManager.merge(entity);
+        entityManager.remove(managedClient);
+
     }
 }
